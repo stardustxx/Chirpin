@@ -15,8 +15,6 @@ var LocalStrategy = require('passport-local').Strategy;
 var index = require('./routes/index');
 var chat = require('./routes/chat');
 
-var sess;
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -25,13 +23,10 @@ app.set('view engine', 'ejs');
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(session({secret: "shirleyisawesome",
-                 resave: true,
-                 saveUninitialized: true}));
-
+app.use(cookieParser({secret: "shirley"}));
 
 try {
     mongoose.connect('mongodb://localhost/users');  
@@ -44,16 +39,6 @@ catch (err) {
 var Schema = mongoose.Schema;
 
 var userSchema = new Schema({
-//    name: {
-//        first: {
-//            type: String,
-//            required: true
-//        },
-//        last: {
-//            type: String,
-//            required: true
-//        }
-//    },
     nameF: {
         type: String,
         required: true
@@ -100,30 +85,41 @@ io.on('connection', function(socket){
 
 // What's gonna be on the screen
 app.get('/', function(req, res){
-    sess = req.session;
-    
     // Checking if session nameF exists
     // If yes, profile; if not, login page
-    if (sess.nameF) {
+    if (req.cookies.nameF) {
         res.redirect('/profile');
     }
     else {
         res.render('index',
                    {title: "Al-Learn"});   
     }
-    console.log(sess.nameF);
+    console.log(req.cookies.nameF);
 });
-app.get('/login', index.login);
-app.get('/signup', index.signup);
-app.get('/msg', chat.chat);
+
+app.get('/login', function(req, res){
+    if (req.cookies.nameF){
+        res.redirect('/profile');   
+    }
+    else {
+        res.render('login');
+    }
+    console.log("/login " + req.cookies.nameF);
+});
+
+app.get('/signup', function(req, res){
+    res.render('signup');
+    console.log("/signup " + req.cookies.nameF);
+});
+
 app.get('/profile', function(req, res){
-    console.log(sess.nameF);
-    if (sess.nameF) {
+    if (req.cookies.nameF) {
         res.render('profile');    
     }
     else {
         res.redirect('/login');
     }
+    console.log("/profile " + req.cookies.nameF);
 });
 
 app.get('/user', function(req, res){
@@ -135,9 +131,6 @@ app.get('/user', function(req, res){
     });
 });
 
-//app.post('/login', passport.authenticate('local', {successRedirect: '/',
-//                                                   failureRedirect: '/login' }));
-
 app.post('/loginCheck', function(req, res){
     console.log(req.body);
     user.findOne({nameF: req.body.nameF, nameL: req.body.nameL}, function(err, search){
@@ -146,30 +139,23 @@ app.post('/loginCheck', function(req, res){
         }
         else {
             if (search == null){
-                res.redirect('/login');
-                console.log("No Result Found");   
+                console.log("No Result Found"); 
+                res.redirect('/login');  
             }
             else {
-                res.redirect('/profile');
                 console.log("Logged as " + search);  
-                sess.nameF = req.body.nameF;
-                sess.nameL = req.body.nameL;
-                console.log(sess.nameF);
+                res.cookie('nameF', req.body.nameF, {path: '/'});
+                console.log(req.cookies.nameF);
+                res.redirect('/profile');
             }
         }
     });
 });
 
 app.get('/logoff', function(req, res){
-    req.session.destroy(function(err){
-		if(err){
-			console.log(err);
-		}
-		else
-		{
-			res.redirect('/');
-		}
-	});  
+    res.clearCookie('nameF', { path: '/' }); 
+    console.log('/logoff ' + req.cookies.nameF);
+    res.redirect('/');
 })
 
 app.post('/registration', function(req, res){
