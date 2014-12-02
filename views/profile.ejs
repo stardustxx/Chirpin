@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Profile</title>
-      <% include partials/head.ejs %>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
-    <h1>Profile</h1>
-    <p>This is gonna be ur profile page</p>
-    <a href='/logoff'>Log Off</a> <br>
-  </body>
+    <head>
+        <title>Profile</title>
+        <% include partials/head.ejs %>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script>
+            var socket = io();
+        </script>
+    </head>
+    <body>
+        <h1>Profile</h1>
+        <p>Hello <%= name %> </p>
+        <p>Email: <%= email %></p>
+        <p>Age: <%= age %></p>
+        
+        <a href='/chat'>Chat</a> <br>
+        <a href='/online'>Who's Online</a> <br>
+        <a href='/logoff'>Log Off</a> <br>
+
+    </body>
 </html>

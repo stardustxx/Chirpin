@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Profile</title>
+        <% include partials/head.ejs %>
+        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <script>
+            //var socket = io();
+        </script>
+    </head>
+    <body>
+        <h1>Who's Online</h1>
+        <% for (var key in name) { %>
+            <% if (name[key].online == true) { %>
+            <p><%= name[key].nameF %></p>
+        <% }} %>
+        <br>
+        <a href='/profile'>Profile</a>
+    </body>
+</html>
