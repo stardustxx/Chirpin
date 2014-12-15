@@ -2,21 +2,34 @@
 <html>
     <head>
         <title>Profile</title>
-        <% include partials/head.ejs %>
         <link rel='stylesheet' href='/stylesheets/style.css' />
-        <script>
-            var socket = io();
-        </script>
+        <link rel='stylesheet' href='/stylesheets/loading.css' />
     </head>
     <body>
-        <h1>Profile</h1>
-        <p>Hello <%= name %> </p>
-        <p>Email: <%= email %></p>
-        <p>Age: <%= age %></p>
+        <div id = "loading">
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+            <div>
+                Searching. Please Sit Tight
+            </div>
+        </div>
         
-        <a href='/chat'>Chat</a> <br>
-        <a href='/online'>Who's Online</a> <br>
-        <a href='/logoff'>Log Off</a> <br>
+        <div class = "beaker">
+            <h1>Profile</h1>
+            <p>Hello <%= name %> </p>
+            <p>Email: <%= email %></p>
+            <p>Age: <%= age %></p>
 
+
+            <a href="/matching"><button class = "btn btn-primary" id = "chatBtn">Chat</button></a> <br>
+            <a href='#' >Chat</a> <br>
+            <a href='/online'>Who's Online</a> <br>
+            <a href='/logoff'>Log Off</a> <br>
+        </div>
+        
+        <% include partials/head.ejs %>
+        <script type="text/javascript" src="javascripts/profile.js"></script>
     </body>
 </html>

@@ -1,19 +1,22 @@
 <!DOCTYPE html>
 <html>
-  <head>
+    <head>
         <title>Chat Sample</title>
+        <% include partials/head.ejs %>
         <link rel='stylesheet' href='/stylesheets/style.css' />
-  </head>
-  <body>
+    </head>
+    <body>
         <h1>Chat</h1>
         <ul id = "messages"></ul>
         <form action="">
             <input id = "m" autocomplete="off">
             <button type="submit">Send</button>    
         </form>
-        <% include partials/head.ejs %>
-      
-      
+
+        <br>
+        <a href="/profile">Profile</a>
+        
+
         <script src="/javascripts/chat.js"></script>
-  </body>
+    </body>
 </html>

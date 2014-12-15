@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Practice</title>
+</head>
+<body>
+<div id = "container">
+    
+</div>
+    <br><br>
+<div id = "container2">
+    
+</div>
+    
+    
+    <script>
+        var names = {
+            "name":
+                [
+                    {
+                     "firstName": "Eric",
+                     "lastName": "Lee"
+                    },
+                    {
+                     "firstName": "James",
+                     "lastName": "douglas"
+                    },
+                    {
+                     "firstName": "",
+                     "lastName": "xbox"
+                    }
+                ]
+        }    
+
+        var test = function(names){
+            var result = [];
+            for (var i = 0; i < names.name.length; i++){
+                var name = "";
+                var lastName = names.name[i].lastName;
+                var tempF = "";
+                var tempL = "";
+                if (names.name[i].firstName == "" || names.name[i].firstName == undefined){
+                       tempF = "";
+                }
+                else {
+                       tempF = names.name[i].firstName.charAt(0);
+                }
+                if (names.name[i].lastName == "" || names.name[i].lastName == undefined){
+                       tempL = "";
+                }
+                else {
+                       tempL += names.name[i].lastName.charAt(0).toUpperCase();
+                }
+                for (var j = 1; j < lastName.length; j++){
+                    tempL += lastName.charAt(j);
+                }
+                name = tempF + " " + tempL;
+                result.push(name);
+            }
+            return result;
+        }
+        
+        var print = function(names) {
+            var container = document.getElementById("container");
+            var p = document.createElement('h2');
+            var t = document.createTextNode('JSON');
+            container.appendChild(p.appendChild(t));
+            for(var i = 0; i < names.name.length; i++){
+                var list = document.createElement('li');
+                console.log(names.name[i].firstName + " " + names.name[i].lastName);
+                var text = document.createTextNode(names.name[i].firstName + " " + names.name[i].lastName);
+                list.appendChild(text);
+                container.appendChild(list);
+            }
+        }
+        
+        var print2 = function(result){
+            var container = document.getElementById("container2");
+            var p = document.createElement('h2');
+            var t = document.createTextNode('Result');
+            container.appendChild(p.appendChild(t));
+            for(var i = 0; i < result.length; i++){
+                var list = document.createElement('li');
+                console.log(result[i]);
+                var text = document.createTextNode(result[i]);
+                list.appendChild(text);
+                container.appendChild(list);
+            }  
+        }
+        
+        print(names);
+        print2(test(names));
+        console.log(names.name);
+        console.log(test(names));
+    </script>
+</body>
+</html>

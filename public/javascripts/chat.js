@@ -1,11 +1,15 @@
-var socket = io();
-var username = "";
+var socket = io('/chat');
+var user = new Object();
+user.username = '';
+user.room = '';
+
+var room = "";
 var fullMessage = new Object();
 fullMessage.name = "";
 fullMessage.msg = "";
 
 $('form').submit(function(){
-    fullMessage.name = username;
+    fullMessage.name = user.username;
     fullMessage.msg = $('#m').val();
     socket.emit('chat message' , fullMessage);
     $('#m').val('');
@@ -17,11 +21,19 @@ socket.on('chat message', function(msg){
 });
 
 socket.on('who', function(obj){
-    username = obj.username;
+    user.username = obj.username;
+    user.room = obj.room;
+    console.log(user);
 });
 
 socket.on('login', function(obj){
-    if (obj.type == 'login') {
-        $('#messages').append($('<li>').text(obj.username + " has logged in"));  
-    }
+    $('#messages').append($('<li>').text(obj.username + " has logged in"));  
+});
+
+socket.on('dc', function(msg){
+    $('#messages').append($('<li>').text(msg + " has gone"));
+});
+
+$(window).on('beforeunload', function(){
+    socket.close();
 });

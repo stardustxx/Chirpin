@@ -27,15 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser({secret: "shirley"}));
 
 var cookieEmail;
-var cookieInfo = new Object();
-
-var passingData = function(obj){
-    cookieInfo.nameF = obj.nameF;
-    cookieInfo.nameL = obj.nameL;
-    cookieInfo.nickname = obj.nickname;
-    cookieInfo.email = obj.email;
-    cookieInfo.password = obj.password;
-}
+var chatRoom = ['room0'];
 
 try {
     mongoose.connect('mongodb://localhost/users');  
@@ -80,18 +72,26 @@ var userSchema = new Schema({
     },
     online: {
         type: Boolean   
+    },
+    room: {
+        type: String
     }
 });
 
 var user = mongoose.model('users', userSchema);
 
+var controleRoom = function(arr, number){
+    arr.splice(number, 1);
+}
+
+// On the /profile being online and standing by
 io.on('connection', function(socket){
+    console.log(cookieEmail);
     var time = new Date();
     
-    var obj = new Object();
-    obj['type'] = '';
-    obj['username'] = '';
-    obj['msg'] = '';
+    var userObj = new Object();
+    userObj['username'] = '';
+    //userObj['msg'] = '';
     
     if (cookieEmail != null){
         user.findOne({email: cookieEmail}, function(err, result){
@@ -99,17 +99,15 @@ io.on('connection', function(socket){
                 conosle.err(err);   
             }
             else if(result != null){
-                user.update({email: cookieEmail}, {online: true}).exec();
                 console.log(result.nameF + " " + result.nameL + " has connected");
-                obj['type'] = 'login';
-                obj['username'] = result.nameF;
-                obj['msg'] = "";
-                socket.emit('who', obj);
-                socket.broadcast.emit('login', obj);
-                console.log(obj);
+                user.update({email: cookieEmail}, {online: true}).exec();
+                userObj['username'] = cookieEmail;
+                //userObj['msg'] = "";
+                socket.emit('who', userObj);
             }   
         });
     }
+    
     socket.on('disconnect', function(){
         user.findOne({email: cookieEmail}, function(err, result){
             if (err){
@@ -121,13 +119,93 @@ io.on('connection', function(socket){
             }   
         });
     });
+});
+
+var chatio = io.of('/chat');
+chatio.on('connection', function(socket){
+    console.log(cookieEmail);
+    socket.username = cookieEmail;
+    console.log('su: ' + socket.username);
+    socket.join(chatRoom[0]);
+    var time = new Date();
+    var roomJoined;
+    
+    var userObj = new Object();
+    userObj['username'] = '';
+    userObj['msg'] = '';
+    userObj['room'] = '';
+
+    // Check room capacity
+    for (var i = 0; i < chatRoom.length; i++){
+        var member = chatio.adapter.rooms[chatRoom[i]];
+        console.log(member);
+        //console.log(Object.keys(member).length);
+        if (member){
+            if (Object.keys(member).length == 2) {
+                console.log('run0');
+                if (i == chatRoom.length - 1){
+                    // when no rooms are available, create room and join
+                    var str = "room" + chatRoom.length;
+                    chatRoom.push(str);
+                    roomJoined = chatRoom[chatRoom.length - 1]
+                    user.update({email: socket.user}, {room: str}).exec();
+                    socket.join(roomJoined);
+                    socket.emit('roomNum', roomJoined);
+                    console.log('run1');
+                    break;
+                }
+            }
+        }
+        else {
+            roomJoined = chatRoom[i];
+            user.update({email: socket.username}, {room: roomJoined}).exec();
+            socket.join(roomJoined);
+            socket.emit('roomNum', roomJoined);
+            console.log('run2');
+            break;
+        }
+    }
+    console.log(chatRoom);
+    
+    if (cookieEmail != null){
+        user.findOne({email: socket.username}, function(err, result){
+            if (err){
+                conosle.err(err);   
+            }
+            else if(result != null){
+                console.log(result.nameF + " " + result.nameL + " has connected");
+                user.update({email: socket.username}, {online: true}).exec();
+                userObj.room = roomJoined;
+                userObj['username'] = socket.username;
+                userObj['msg'] = "";
+                socket.emit('who', userObj);
+                chatio.in(roomJoined).emit('login', userObj);
+                //socket.broadcast.emit('login', userObj);
+            }   
+        });
+    }
+    
+    socket.on('disconnect', function(){
+        user.findOne({email: socket.username}, function(err, result){
+            if (err){
+                conosle.err(err);   
+            }
+            else if(result != null){
+                console.log(result.nameF + " " + result.nameL + " has disconnected");
+                user.update({email: socket.username}, {online: false}).exec();
+                user.update({email: socket.username}, {room: ""}).exec();
+                socket.broadcast.to(result.room).emit('dc', socket.username);
+                console.log('dc: ' + socket.username);
+            }   
+        });
+    });
 
     socket.on('chat message', function(msg){
+        user.update({email: socket.username}, {online: true}).exec();
         console.log(msg.name + ': ' + msg.msg);
-        obj['type'] = 'msg';
-        obj['username'] = msg.name;
-        obj['msg'] = msg.msg;
-        io.emit('chat message', obj);
+        userObj['username'] = msg.name;
+        userObj['msg'] = msg.msg;
+        chatio.in(roomJoined).emit('chat message', userObj);
     });
 });
 
@@ -174,10 +252,12 @@ app.get('/profile', function(req, res){
             }
             else {
                 if (search) {
+                    console.log(cookieEmail);
+                    user.update({email: cookieEmail}, {online: true}).exec();
                     var year = new Date();
                     age = year.getFullYear() - search.birthday;
                     res.render('profile', {name: search.nameF,
-                                           email: search.email});    
+                                           email: search.email}); 
                 }
                 else {
                     res.redirect('/');   
@@ -195,6 +275,7 @@ app.get('/profile', function(req, res){
 app.get('/chat', function(req, res){
     if (req.cookies.email){
         cookieEmail = req.cookies.email;
+        console.log('chat: ' + cookieEmail);
         res.render('chat');
     }
     else {
@@ -203,9 +284,16 @@ app.get('/chat', function(req, res){
 });
 
 app.get('/online', function(req, res){
-    if (req.cookies.email){
-        user.find({}, function(err, result){
-            res.render('online', {name: result});
+    if(req.cookies.email){
+        cookieEmail = req.cookies.email;
+        user.update({email: cookieEmail}, {online: true}).exec();
+        user.find({online: true}, function(err, result){
+            if (err){
+                console.error(err);   
+            }
+            else {
+                res.render('online', {onlineUsers: result});
+            }
         });
     }
 });
@@ -224,7 +312,6 @@ app.post('/loginCheck', function(req, res){
             else {
                 console.log("Logged as " + search);  
                 res.cookie('email', req.body.email, {path: '/'});
-                passingData(search);
                 console.log("/logincheck " + req.cookies.email);
                 res.redirect('/profile');
             }
@@ -250,7 +337,8 @@ app.post('/registration', function(req, res){
         birthday: req.body.birthday,
         language_main: "English",
         point: 0,
-        online: false
+        online: false,
+        room: ""
     });
     try {
         register.save();
@@ -259,7 +347,24 @@ app.post('/registration', function(req, res){
     catch (err) {
         console.error(err);   
     }
-    
+});
+
+app.get('/matching', function(req, res){
+    cookieEmail = req.cookies.email;
+    var obj = new Object();
+    var randomNumber;
+    if (req.cookies.email != null || req.cookies.email != undefined) {
+        user.find({email: req.cookies.email}, function(err, result){
+            if (err){
+                console.err(err);   
+            }
+            else {
+                //randomNumber = Math.floor(Math.random() * readyUsers.length);
+                console.log(randomNumber);
+            }
+        });   
+        res.redirect('/chat');
+    }
 });
 
 

@@ -4,17 +4,24 @@
         <title>Profile</title>
         <% include partials/head.ejs %>
         <link rel='stylesheet' href='/stylesheets/style.css' />
-        <script>
-            //var socket = io();
-        </script>
+<!--        <link rel='stylesheet' href='/stylesheets/loading.css' />-->
     </head>
     <body>
-        <h1>Who's Online</h1>
-        <% for (var key in name) { %>
-            <% if (name[key].online == true) { %>
-            <p><%= name[key].nameF %></p>
-        <% }} %>
-        <br>
-        <a href='/profile'>Profile</a>
+        <h1>Online</h1>
+        <form>
+<!--
+            <div class="spinner">
+                <div class="double-bounce1"></div>
+                <div class="double-bounce2"></div>
+            </div>
+-->
+            
+            <% for (var i = 0; i < onlineUsers.length; i++){ %>
+                <p>
+                    <%= onlineUsers[i].email %>
+                </p>
+            <% } %>
+            
+            <script type="text/javascript" src="javascripts/online.js"></script>
     </body>
 </html>

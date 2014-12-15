@@ -1,5 +1,4 @@
 body {
-  padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -9,4 +8,19 @@ a {
 
 #messages li {
     list-style: none;   
+}
+
+#beaker {
+    position: relative;
+}
+
+#loading {
+    display: none;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.beaker {
+    margin: 50px;   
 }
