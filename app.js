@@ -126,7 +126,6 @@ chatio.on('connection', function(socket){
     console.log(cookieEmail);
     socket.username = cookieEmail;
     console.log('su: ' + socket.username);
-    socket.join(chatRoom[0]);
     var time = new Date();
     var roomJoined;
     
@@ -137,31 +136,26 @@ chatio.on('connection', function(socket){
 
     // Check room capacity
     for (var i = 0; i < chatRoom.length; i++){
+        socket.join(chatRoom[i]);
         var member = chatio.adapter.rooms[chatRoom[i]];
         console.log(member);
-        //console.log(Object.keys(member).length);
-        if (member){
-            if (Object.keys(member).length == 2) {
-                console.log('run0');
-                if (i == chatRoom.length - 1){
-                    // when no rooms are available, create room and join
-                    var str = "room" + chatRoom.length;
-                    chatRoom.push(str);
-                    roomJoined = chatRoom[chatRoom.length - 1]
-                    user.update({email: socket.user}, {room: str}).exec();
-                    socket.join(roomJoined);
-                    socket.emit('roomNum', roomJoined);
-                    console.log('run1');
-                    break;
-                }
+        if (Object.keys(member).length > 2) {
+            if (i == chatRoom.length - 1) {
+                socket.leave(chatRoom[i]);
+                var j = i + 1;
+                var str = "room" + j;
+                chatRoom.push(str);
             }
+            else {
+                socket.leave(chatRoom[i]);
+            }
+            
+            
         }
         else {
             roomJoined = chatRoom[i];
             user.update({email: socket.username}, {room: roomJoined}).exec();
-            socket.join(roomJoined);
             socket.emit('roomNum', roomJoined);
-            console.log('run2');
             break;
         }
     }
@@ -194,6 +188,7 @@ chatio.on('connection', function(socket){
                 console.log(result.nameF + " " + result.nameL + " has disconnected");
                 user.update({email: socket.username}, {online: false}).exec();
                 user.update({email: socket.username}, {room: ""}).exec();
+                socket.leave(result.room);
                 socket.broadcast.to(result.room).emit('dc', socket.username);
                 console.log('dc: ' + socket.username);
             }   
