@@ -129,8 +129,10 @@ chatio.on('connection', function(socket){
     var time = new Date();
     var roomJoined;
     
+    // Object that contains vital info
     var userObj = new Object();
     userObj['username'] = '';
+    userObj['name'] = '';
     userObj['msg'] = '';
     userObj['room'] = '';
 
@@ -170,11 +172,11 @@ chatio.on('connection', function(socket){
                 console.log(result.nameF + " " + result.nameL + " has connected");
                 user.update({email: socket.username}, {online: true}).exec();
                 userObj.room = roomJoined;
-                userObj['username'] = socket.username;
+                userObj.name = result.nameF;
+                userObj['username'] = result.nickname;
                 userObj['msg'] = "";
                 socket.emit('who', userObj);
                 chatio.in(roomJoined).emit('login', userObj);
-                //socket.broadcast.emit('login', userObj);
             }   
         });
     }
@@ -189,7 +191,7 @@ chatio.on('connection', function(socket){
                 user.update({email: socket.username}, {online: false}).exec();
                 user.update({email: socket.username}, {room: ""}).exec();
                 socket.leave(result.room);
-                socket.broadcast.to(result.room).emit('dc', socket.username);
+                socket.broadcast.to(result.room).emit('dc', result.nickname);
                 console.log('dc: ' + socket.username);
             }   
         });

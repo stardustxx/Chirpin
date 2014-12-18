@@ -1,0 +1,105 @@
+html, body {
+	height: 100%;
+}
+
+body {
+  font: 14px "Roboto", "Lucida Grande", Helvetica, Arial, sans-serif;
+}
+
+a {
+  color: #00B7FF;
+}
+
+#messages li {
+    list-style: none;   
+}
+
+#beaker {
+	left: 0;
+	float: left;
+    position: relative;
+    width: 90%;
+    height: 100%;
+    background-color: #ecf0f1;
+    padding: 20px;
+    padding-right: 10%;
+}
+
+.container {
+	width: 80%;
+}
+
+#loading {
+    display: none;
+    position: absolute;
+    text-align: center;
+    width: 100%;
+}
+
+.rightSideBar {
+	float: right;
+	position: absolute;
+	right: 0;
+	background-color: yellow;
+	height: 100%;
+	width: 10%;
+}
+
+#chatbox {
+	position: fixed;
+	bottom: 20px;
+	height: 60px;
+	width: 70%;
+}
+
+#chatinput {
+	float: left;
+	width: 90%;
+}
+
+#m {
+	width: 100%;
+	height: 100%;
+}
+
+#chatbox button {
+	height: 100%;
+}
+
+#messages {
+	color: black;
+}
+
+#messages li {
+	line-height: 25px;
+/*
+	border-bottom-style: solid;
+	border-bottom-width: 2px;
+	border-bottom-color: #16a085;
+*/
+	font-size: 15px;
+	margin-bottom: 20px;
+    display: inline;
+    width: 300px;
+}
+
+#messages paper-shadow {
+    margin-bottom: 10px;
+    padding-left: 1em;
+    width: 30%;
+}
+
+.username {
+	font-weight: bold;
+}
+
+.backBtn {
+	display: inline-block;
+	float: left;
+	background: #8e44ad;
+	color: white;
+}
+
+#submit {
+	float: left;
+}
