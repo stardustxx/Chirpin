@@ -176,10 +176,19 @@ chatio.on('connection', function(socket){
                 userObj['username'] = result.nickname;
                 userObj['msg'] = "";
                 socket.emit('who', userObj);
-                chatio.in(roomJoined).emit('login', userObj);
+                if ((Object.keys(member).length > 1)) {
+                    chatio.in(roomJoined).emit('prep');
+                }
+                else {
+                    chatio.in(roomJoined).emit('waiting');
+                }
             }   
         });
     }
+    
+    socket.on('login', function(user){
+         chatio.in(user.room).emit('login', user);
+    });
     
     socket.on('disconnect', function(){
         user.findOne({email: socket.username}, function(err, result){

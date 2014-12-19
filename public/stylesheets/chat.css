@@ -10,10 +10,6 @@ a {
   color: #00B7FF;
 }
 
-#messages li {
-    list-style: none;   
-}
-
 #beaker {
 	left: 0;
 	float: left;
@@ -38,7 +34,7 @@ a {
 
 .rightSideBar {
 	float: right;
-	position: absolute;
+	position: fixed;
 	right: 0;
 	background-color: yellow;
 	height: 100%;
@@ -68,25 +64,24 @@ a {
 
 #messages {
 	color: black;
+    max-width: 1200px;
+    max-height: 700px;
+    overflow: auto;
 }
 
 #messages li {
+    list-style: none;  
 	line-height: 25px;
-/*
-	border-bottom-style: solid;
-	border-bottom-width: 2px;
-	border-bottom-color: #16a085;
-*/
 	font-size: 15px;
-	margin-bottom: 20px;
+	margin-bottom: 0px;
     display: inline;
-    width: 300px;
+    max-width: 100%;
 }
 
 #messages paper-shadow {
     margin-bottom: 10px;
     padding-left: 1em;
-    width: 30%;
+    padding-right: 1em;
 }
 
 .username {
@@ -94,6 +89,7 @@ a {
 }
 
 .backBtn {
+    position: fixed;
 	display: inline-block;
 	float: left;
 	background: #8e44ad;
@@ -102,4 +98,43 @@ a {
 
 #submit {
 	float: left;
+}
+
+.yourchat {
+    float: right;
+    clear: both;
+}
+
+.yourchat .username {
+    float: right;
+}
+
+.yourchat paper-shadow {
+    background-color: white;
+}
+
+.otherschat {
+    float: left;
+    clear: both;
+}
+
+.otherschat paper-shadow{
+    background-color: #d35400;
+    color: #ecf0f0;
+}
+
+.dc paper-shadow {
+    background-color: #8e44ad;
+    color: white;
+    text-align: center;
+    clear: both;
+    margin: auto;
+}
+
+.waiting paper-shadow {
+    background-color: #c0392b;
+    color: white;
+    text-align: center;
+    clear: both;
+    margin: auto;
 }
