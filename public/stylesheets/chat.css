@@ -1,140 +1,292 @@
-html, body {
-	height: 100%;
+@media (min-width: 800px){
+    html, body {
+        height: 100%;
+    }
+
+    body {
+      font: "Roboto", "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
+
+    a {
+      color: #00B7FF;
+    }
+
+    #beaker {
+        left: 0;
+        float: left;
+        position: relative;
+        width: 90%;
+        height: 100%;
+        background-color: #ecf0f1;
+        padding: 20px;
+        padding-right: 10%;
+    }
+
+    .container {
+        width: 80%;
+        height: 100%;
+    }
+
+    #loading {
+        display: none;
+        position: absolute;
+        text-align: center;
+        width: 100%;
+    }
+
+    .SideBar {
+        float: right;
+        position: fixed;
+        right: 0;
+        background-color: yellow;
+        height: 100%;
+        width: 20%;
+        display: none;
+    }
+
+    #chatbox {
+        position: fixed;
+        bottom: 20px;
+        height: 60px;
+        width: 70%;
+    }
+
+    #chatinput {
+        float: left;
+        width: 90%;
+    }
+
+    #m {
+        width: 100%;
+        height: 100%;
+    }
+
+    #chatbox button {
+        height: 100%;
+    }
+
+    #messages {
+        color: black;
+        max-width: 1200px;
+        height: 85%;
+        overflow: auto;
+        font-size: 16px;
+    }
+
+    #messages li {
+        list-style: none;  
+        line-height: 25px;
+        font-size: 15px;
+        margin-bottom: 0px;
+        display: inline;
+        max-width: 100%;
+    }
+
+    #messages paper-shadow {
+        margin-bottom: 10px;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
+
+    .username {
+        font-weight: bold;
+    }
+
+    .backBtn {
+        position: fixed;
+        display: inline-block;
+        float: left;
+        color: black;
+    }
+
+    #submit {
+        float: left;
+    }
+
+    .yourchat {
+        float: right;
+        clear: both;
+    }
+
+    .yourchat .username {
+        float: right;
+    }
+
+    .yourchat paper-shadow {
+        background-color: white;
+    }
+
+    .otherschat {
+        float: left;
+        clear: both;
+    }
+
+    .otherschat paper-shadow{
+        background-color: #d35400;
+        color: #ecf0f0;
+    }
+
+    .dc paper-shadow {
+        background-color: #8e44ad;
+        color: white;
+        text-align: center;
+        clear: both;
+        margin: auto;
+    }
+
+    .waiting paper-shadow {
+        background-color: #c0392b;
+        color: white;
+        text-align: center;
+        clear: both;
+        margin: auto;
+    }
 }
 
-body {
-  font: 14px "Roboto", "Lucida Grande", Helvetica, Arial, sans-serif;
-}
 
-a {
-  color: #00B7FF;
-}
 
-#beaker {
-	left: 0;
-	float: left;
-    position: relative;
-    width: 90%;
-    height: 100%;
-    background-color: #ecf0f1;
-    padding: 20px;
-    padding-right: 10%;
-}
 
-.container {
-	width: 80%;
-}
+@media (max-width: 799px){
+    html, body {
+        height: 100%;
+    }
 
-#loading {
-    display: none;
-    position: absolute;
-    text-align: center;
-    width: 100%;
-}
+    body {
+      font: "Roboto", "Lucida Grande", Helvetica, Arial, sans-serif;
+    }
 
-.rightSideBar {
-	float: right;
-	position: fixed;
-	right: 0;
-	background-color: yellow;
-	height: 100%;
-	width: 10%;
-}
+    a {
+      color: #00B7FF;
+    }
 
-#chatbox {
-	position: fixed;
-	bottom: 20px;
-	height: 60px;
-	width: 70%;
-}
+    #beaker {
+        left: 0;
+        float: left;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        background-color: #ecf0f1;
+        padding: 20px;
+        padding-right: 10%;
+    }
 
-#chatinput {
-	float: left;
-	width: 90%;
-}
+    .container {
+        width: 80%;
+        height: 100%;
+    }
 
-#m {
-	width: 100%;
-	height: 100%;
-}
+    #loading {
+        display: none;
+        position: absolute;
+        text-align: center;
+        width: 100%;
+    }
 
-#chatbox button {
-	height: 100%;
-}
+    .SideBar {
+        display: none;
+        float: right;
+        position: fixed;
+        right: 0;
+        background-color: yellow;
+        height: 100%;
+        width: 20%;
+    }
 
-#messages {
-	color: black;
-    max-width: 1200px;
-    max-height: 700px;
-    overflow: auto;
-}
+    #chatbox {
+        position: fixed;
+        bottom: 20px;
+        height: 60px;
+        width: 80%;
+    }
 
-#messages li {
-    list-style: none;  
-	line-height: 25px;
-	font-size: 15px;
-	margin-bottom: 0px;
-    display: inline;
-    max-width: 100%;
-}
+    #chatinput {
+        float: left;
+        width: 60vw;
+    }
 
-#messages paper-shadow {
-    margin-bottom: 10px;
-    padding-left: 1em;
-    padding-right: 1em;
-}
+    #m {
+        width: 100%;
+        height: 100%;
+    }
 
-.username {
-	font-weight: bold;
-}
+    #chatbox button {
+        height: 100%;
+    }
 
-.backBtn {
-    position: fixed;
-	display: inline-block;
-	float: left;
-	background: #8e44ad;
-	color: white;
-}
+    #messages {
+        color: black;
+        max-width: 1200px;
+        height: 85%;
+        overflow: auto;
+        font-size: 16px;
+    }
 
-#submit {
-	float: left;
-}
+    #messages li {
+        list-style: none;  
+        line-height: 25px;
+        font-size: 15px;
+        margin-bottom: 0px;
+        display: inline;
+        max-width: 100%;
+    }
 
-.yourchat {
-    float: right;
-    clear: both;
-}
+    #messages paper-shadow {
+        margin-bottom: 10px;
+        padding-left: 1em;
+        padding-right: 1em;
+    }
 
-.yourchat .username {
-    float: right;
-}
+    .username {
+        font-weight: bold;
+    }
 
-.yourchat paper-shadow {
-    background-color: white;
-}
+    .backBtn {
+        position: fixed;
+        display: inline-block;
+        float: left;
+        color: black;
+    }
 
-.otherschat {
-    float: left;
-    clear: both;
-}
+    #submit {
+        float: left;
+    }
 
-.otherschat paper-shadow{
-    background-color: #d35400;
-    color: #ecf0f0;
-}
+    .yourchat {
+        float: right;
+        clear: both;
+    }
 
-.dc paper-shadow {
-    background-color: #8e44ad;
-    color: white;
-    text-align: center;
-    clear: both;
-    margin: auto;
-}
+    .yourchat .username {
+        float: right;
+    }
 
-.waiting paper-shadow {
-    background-color: #c0392b;
-    color: white;
-    text-align: center;
-    clear: both;
-    margin: auto;
+    .yourchat paper-shadow {
+        background-color: white;
+    }
+
+    .otherschat {
+        float: left;
+        clear: both;
+    }
+
+    .otherschat paper-shadow{
+        background-color: #d35400;
+        color: #ecf0f0;
+    }
+
+    .dc paper-shadow {
+        background-color: #8e44ad;
+        color: white;
+        text-align: center;
+        clear: both;
+        margin: auto;
+    }
+
+    .waiting paper-shadow {
+        background-color: #c0392b;
+        color: white;
+        text-align: center;
+        clear: both;
+        margin: auto;
+    }
 }

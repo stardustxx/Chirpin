@@ -1,19 +1,67 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
-      <% include partials/head.ejs %>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
-    <script>
-        //var socket = io();    
-    </script>
+    <title>Chirpin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <% include partials/head.ejs %>
+    <link rel='stylesheet' href='/stylesheets/index.css' />
   </head>
   <body>
-      <h1><%= title %></h1>
-      <p>Welcome to <%= title %></p>
-      <a href='/login'>Log In</a> <br>
-      <a href='/signup'>Sign Up</a> <br>
-      <a href='/logoff'>Log Off</a> <br>
-      <a href='/profile'>Profile</a>
+    <div class="beaker">
+        <h1>Chirpin</h1>
+        <div class="text">
+            Unexpected is what makes the world exciting. Come in and chat with strangers
+        </div>
+        <br>
+        <paper-button raised class = 'login0'>Log In</paper-button>
+        <paper-button raised class = 'signup0'>Sign Up</paper-button>
+    </div>
+    <div class = "containerSign disappear" id = "loginForm">
+        <div id = "signupform">
+            <div>
+                <form role = "form" action="/registration" method="post">
+                    <div class = "form-group">
+                        <label for = "nameF">First Name</label>
+                        <paper-input-decorator label="First Name"><input type = "text" name = "nameF" id = "nameF" placeholder="" required></paper-input-decorator>
+                    </div>
+                    <div class = "form-group">
+                        <label for = "nameL">Last Name</label>
+                        <paper-input-decorator label="last Name"><input type = "text" name = "nameL" id = "nameL" placeholder="" required></paper-input-decorator>
+                    </div>
+                    <div class = "form-group">
+                        <label for = "nickName">Nickname</label>
+                        <paper-input-decorator label = "nickname"><input type = "text" name = "nickname" id = "nickName" placeholder="" required></paper-input-decorator>
+                    </div>
+                    <div class = "form-group">
+                        <label for = "email">Email Address</label>
+                        <paper-input-decorator label = "Email"><input type = "email" name = "email" id = "inputEmail" placeholder="Enter email" required></paper-input-decorator>
+                    </div>
+                    <div class = "form-group">
+                        <label for = "password">Password</label>
+                        <paper-input-decorator label = "Password"><input type = "password" name = "pass" id = "inputPassword" placeholder="Password" required></paper-input-decorator>
+                    </div>
+                    <button type = "submit" class = "btn btn-primary">Sign Up</button>
+                    <button class = "btn btn-primary login1" type="button">Log In</button>
+                </form>
+            </div>
+        </div>
+      </div>
+      <div class="containerLog disappear">
+          <form role = "form" action="/loginCheck" method="post">
+                <div class = "form-group">
+                    <label for = "email">Email Address</label>
+                    <paper-input-decorator label = "Email"><input type = "email" name = "email" id = "inputEmail" placeholder="Enter email" required></paper-input-decorator>
+                </div>
+                <div class = "form-group">
+                    <label for = "password">Password</label>
+                    <paper-input-decorator label = "Password"><input type = "password" name = "pass" id = "inputPassword" placeholder="Password" required></paper-input-decorator>
+                </div>
+                <button type = "submit" class = "btn btn-primary">Log In</button>
+                <button class = "btn btn-primary signup2" type="button">Sign Up</button>
+            </form>
+      </div>
+      
+    
+    <script type="text/javascript" src="javascripts/index.js"></script>
   </body>
 </html>

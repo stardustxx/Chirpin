@@ -223,31 +223,30 @@ app.get('/', function(req, res){
         res.redirect('/profile');
     }
     else {
-        res.render('index',
-                   {title: "Al-Learn"});   
+        res.render('index');   
     }
     console.log(req.cookies.email);
 });
 
-app.get('/login', function(req, res){
-    if (req.cookies.email){
-        res.redirect('/profile');   
-    }
-    else {
-        res.render('login');
-    }
-    console.log("/login " + req.cookies.email);
-});
-
-app.get('/signup', function(req, res){
-    if (req.cookies.email){
-        res.redirect('profile');   
-    }
-    else {
-        console.log("/signup " + req.cookies.email);
-        res.render('signup');   
-    }
-});
+//app.get('/login', function(req, res){
+//    if (req.cookies.email){
+//        res.redirect('/profile');   
+//    }
+//    else {
+//        res.render('login');
+//    }
+//    console.log("/login " + req.cookies.email);
+//});
+//
+//app.get('/signup', function(req, res){
+//    if (req.cookies.email){
+//        res.redirect('profile');   
+//    }
+//    else {
+//        console.log("/signup " + req.cookies.email);
+//        res.render('signup');   
+//    }
+//});
 
 app.get('/profile', function(req, res){
     if (req.cookies.email) {
@@ -262,8 +261,7 @@ app.get('/profile', function(req, res){
                     user.update({email: cookieEmail}, {online: true}).exec();
                     var year = new Date();
                     age = year.getFullYear() - search.birthday;
-                    res.render('profile', {name: search.nameF,
-                                           email: search.email}); 
+                    res.render('profile', {name: search.nameF}); 
                 }
                 else {
                     res.redirect('/');   
@@ -289,20 +287,20 @@ app.get('/chat', function(req, res){
     }
 });
 
-app.get('/online', function(req, res){
-    if(req.cookies.email){
-        cookieEmail = req.cookies.email;
-        user.update({email: cookieEmail}, {online: true}).exec();
-        user.find({online: true}, function(err, result){
-            if (err){
-                console.error(err);   
-            }
-            else {
-                res.render('online', {onlineUsers: result});
-            }
-        });
-    }
-});
+//app.get('/online', function(req, res){
+//    if(req.cookies.email){
+//        cookieEmail = req.cookies.email;
+//        user.update({email: cookieEmail}, {online: true}).exec();
+//        user.find({online: true}, function(err, result){
+//            if (err){
+//                console.error(err);   
+//            }
+//            else {
+//                res.render('online', {onlineUsers: result});
+//            }
+//        });
+//    }
+//});
 
 app.post('/loginCheck', function(req, res){
     console.log(req.body);
@@ -365,7 +363,6 @@ app.get('/matching', function(req, res){
                 console.err(err);   
             }
             else {
-                //randomNumber = Math.floor(Math.random() * readyUsers.length);
                 console.log(randomNumber);
             }
         });   

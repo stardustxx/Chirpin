@@ -2,7 +2,8 @@
 <html>
     <head>
         <title>Profile</title>
-        <link rel='stylesheet' href='/stylesheets/style.css' />
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel='stylesheet' href='/stylesheets/profile.css' />
         <link rel='stylesheet' href='/stylesheets/loading.css' />
     </head>
     <body>
@@ -11,22 +12,14 @@
                 <div class="double-bounce1"></div>
                 <div class="double-bounce2"></div>
             </div>
-            <div>
-                Searching. Please Sit Tight
-            </div>
         </div>
         
         <div class = "beaker">
-            <h1>Profile</h1>
-            <p>Hello <%= name %> </p>
-            <p>Email: <%= email %></p>
-            <p>Age: <%= age %></p>
+            <div class = "text">Hello <%= name %>, would you like to: </div> <br>
+            
+            <a href="/chat"><paper-button raised id = "chatBtn">Chat</paper-button></a> <br>
+            <a href="/logoff"><paper-button raised id = "logoff">Log Off</paper-button></a> <br>
 
-
-            <a href="/matching"><button class = "btn btn-primary" id = "chatBtn">Chat</button></a> <br>
-            <a href='#' >Chat</a> <br>
-            <a href='/online'>Who's Online</a> <br>
-            <a href='/logoff'>Log Off</a> <br>
         </div>
         
         <% include partials/head.ejs %>

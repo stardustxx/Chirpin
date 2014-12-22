@@ -1,0 +1,131 @@
+@media (min-width: 600px){
+    html, body {
+        font: "Roboto", "Lucida Grande", Helvetica, Arial, sans-serif;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        background: url("../images/background.jpg") center center fixed no-repeat;
+        background-size: cover;
+    }
+
+    .beaker {
+        background: rgba(0, 0, 0, 0.5);
+        width: 500px;
+        margin: auto;
+        margin-top: 40vh;
+        text-align: center;
+
+    }
+
+    .login0, .login1, .signup0, signup2{
+        color: white;
+        background: #8e44ad;
+    }
+
+    .signup {
+        color: white;
+        background: #c0392b;
+    }
+
+    .text {
+        color: white;
+        font-size: 20px;
+    }
+
+    .beaker h1 {
+        color: white;
+    }
+
+    .containerSign {
+        background: rgba(0, 0, 0, 0.5);
+        width: 500px;
+        color: white;
+        margin: auto;
+        margin-top: 20vh;
+        padding: 20px;
+    }
+
+    .containerLog {
+        background: rgba(0, 0, 0, 0.5);
+        width: 500px;
+        margin: auto;
+        color: white;
+        margin-top: 35vh;
+        padding: 20px;
+    }
+
+    .disappear {
+        display: none;
+    }
+}
+
+
+
+@media (max-width: 599px) {
+    html, body {
+        font: "Roboto", "Lucida Grande", Helvetica, Arial, sans-serif;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    body {
+        background: url("../images/background.jpg") center center fixed no-repeat;
+        background-size: cover;
+    }
+
+    .beaker {
+        background: rgba(0, 0, 0, 0.5);
+        width: 300px;
+        margin: auto;
+        margin-top: 30vh;
+        text-align: center;
+
+    }
+
+    .login0, .login1, .signup0, signup2{
+        color: white;
+        background: #8e44ad;
+    }
+
+    .signup {
+        color: white;
+        background: #c0392b;
+    }
+
+    .text {
+        color: white;
+        font-size: 20px;
+    }
+
+    .beaker h1 {
+        color: white;
+    }
+
+    .containerSign {
+        background: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        margin-top: 10vh;
+        color: white;
+        padding: 20px;
+    }
+
+    .containerLog {
+        background: rgba(0, 0, 0, 0.5);
+        width: 100%;
+        margin-top: 10vh;
+        color: white;
+        padding: 20px;
+    }
+
+    .disappear {
+        display: none;
+    }
+    
+    label {
+        display: none;
+    }
+}
