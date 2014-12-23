@@ -315,7 +315,7 @@ app.post('/loginCheck', function(req, res){
         else {
             if (search == null){
                 console.log("No Result Found"); 
-                res.redirect('/login');  
+                res.redirect('/');  
             }
             else {
                 console.log("Logged as " + search);  
@@ -350,7 +350,7 @@ app.post('/registration', function(req, res){
     });
     try {
         register.save();
-        res.redirect('/login');
+        res.redirect('/');
     }
     catch (err) {
         console.error(err);   
