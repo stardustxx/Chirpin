@@ -415,8 +415,12 @@ app.use(function(err, req, res, next) {
     });
 });
 
-server.listen(8080, function(){
+server.listen(port, ip, function(){
    console.log("server running"); 
 });
+
+//server.listen(8080, function(){
+//   console.log("server running"); 
+//});
 
 module.exports = app;
