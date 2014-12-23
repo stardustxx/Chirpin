@@ -275,7 +275,7 @@ app.get('/profile', function(req, res){
         }); 
     }
     else {
-        res.redirect('/login');
+        res.redirect('/');
     }
     console.log("/profile " + req.cookies.email);
 });
