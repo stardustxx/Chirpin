@@ -10,8 +10,8 @@ var bodyParser = require('body-parser');
 var io = require('socket.io')(server); // Let socket.io to listen on express port
 var mongoose = require('mongoose');
 
-var port = process.env.OPENSHIFT_NODEJS_PORT || 8080;
-var ip = process.env.OPENSHIFT_NODEJS_IP || "127.0.0.1";
+var port = process.env.PORT || 8080;
+var ip = process.env.IP || "127.0.0.1";
 
 var index = require('./routes/index');
 var chat = require('./routes/chat');
@@ -415,7 +415,7 @@ app.use(function(err, req, res, next) {
     });
 });
 
-server.listen(port, ip, function(){
+server.listen(port, function(){
    console.log("server running"); 
 });
 
