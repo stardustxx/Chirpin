@@ -342,7 +342,7 @@ app.post('/registration', function(req, res){
         nickname: req.body.nickname,
         email: req.body.email,
         password: req.body.pass,
-        birthday: req.body.birthday,
+        birthday: 0,
         language_main: "English",
         point: 0,
         online: false,
