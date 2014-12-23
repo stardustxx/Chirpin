@@ -33,7 +33,7 @@ var cookieEmail;
 var chatRoom = ['room0'];
 
 try {
-    mongoose.connect('mongodb://http://nodejs-chirpin.rhcloud.com/nodejs');
+    mongoose.connect('mongodb://stardustxx:xu3yj/d93@ds063870.mongolab.com:63870/chirpin');
     //mongoose.connect('mongodb://localhost/users');  
     console.log('Mongoose conencted');
 }
