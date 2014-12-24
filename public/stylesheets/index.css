@@ -108,7 +108,7 @@
     .containerSign {
         background: rgba(0, 0, 0, 0.5);
         width: 100%;
-        margin-top: 15vh;
+        height: 100%;
         color: white;
         padding: 20px;
     }
@@ -116,7 +116,7 @@
     .containerLog {
         background: rgba(0, 0, 0, 0.5);
         width: 100%;
-        margin-top: 30vh;
+        margin-top: 20vh;
         color: white;
         padding: 20px;
     }
