@@ -85,11 +85,13 @@ socket.on('login', function(obj){
 });
 
 socket.on('dc', function(msg){
+    console.log(msg);
     var $li = $('<li>');
-    var str = '<span class = "username">' + msg + '</span>' + ' has gone!';
+    var $msg = '<span class = "username">' + msg + '</span>';
+    var str = $msg + ' has gone';
     $li.addClass('dc');
     var $message = $li.html('<paper-shadow z = "1">' + str + '</paper-shadow>');
-    $('#messages').append();
+    $('#messages').append($message);
     $message.hide().fadeIn();
     seebot();
 });

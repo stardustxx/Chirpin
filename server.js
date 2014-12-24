@@ -201,10 +201,10 @@ chatio.on('connection', function(socket){
             }
             else if(result != null){
                 console.log(result.nameF + " " + result.nameL + " has disconnected");
+                chatio.to(result.room).emit('dc', result.nickname);
+                socket.leave(result.room);
                 user.update({email: socket.username}, {online: false}).exec();
                 user.update({email: socket.username}, {room: ""}).exec();
-                socket.leave(result.room);
-                socket.broadcast.to(result.room).emit('dc', result.nickname);
                 console.log('dc: ' + socket.username);
             }   
         });
