@@ -56,11 +56,6 @@
         width: 90%;
     }
 
-    #m {
-        width: 100%;
-        height: 100%;
-    }
-
     #chatbox button {
         height: 100%;
     }
@@ -94,8 +89,6 @@
 
     .backBtn {
         position: fixed;
-        display: inline-block;
-        float: left;
         color: black;
     }
 
@@ -148,6 +141,7 @@
 
 @media (max-width: 799px){
     html, body {
+        width: 100%;
         height: 100%;
     }
 
@@ -167,12 +161,14 @@
         height: 100%;
         background-color: #ecf0f1;
         padding: 20px;
-        padding-right: 10%;
+        padding-top: 5px;
     }
 
     .container {
-        width: 80%;
+        width: 100%;
         height: 100%;
+        padding: 0;
+        margin: 0;
     }
 
     #loading {
@@ -196,17 +192,12 @@
         position: fixed;
         bottom: 20px;
         height: 60px;
-        width: 80%;
+        width: 100%;
     }
 
     #chatinput {
         float: left;
-        width: 60vw;
-    }
-
-    #m {
-        width: 100%;
-        height: 100%;
+        width: 80vw;
     }
 
     #chatbox button {
@@ -215,15 +206,16 @@
 
     #messages {
         color: black;
-        max-width: 1200px;
-        height: 85%;
+        width: 100%;
+        height: 75%;
         overflow: auto;
         font-size: 16px;
+        margin-left: -20px;
     }
 
     #messages li {
         list-style: none;  
-        line-height: 25px;
+        line-height: 1.5em;
         font-size: 15px;
         margin-bottom: 0px;
         display: inline;
@@ -241,9 +233,6 @@
     }
 
     .backBtn {
-        position: fixed;
-        display: inline-block;
-        float: left;
         color: black;
     }
 
