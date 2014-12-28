@@ -91,7 +91,7 @@
         width: 100%;
         height: 100%;
         color: white;
-        padding: 20px;
+        padding: 10px;
     }
     
     #signupform {
@@ -116,6 +116,6 @@
     }
     
     .warning {
-        margin-top: 20px;
+        margin-top: 10px;
     }
 }
