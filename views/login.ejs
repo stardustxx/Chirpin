@@ -1,42 +1,29 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Log in</title>
+    <title>Chirpin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <% include partials/head.ejs %>
     <link rel='stylesheet' href='/stylesheets/login.css' />
   </head>
   <body>
-      <div class = "container" id = "loginForm">
-        <div class = "panel panel_default">
-            <div class = "panel-heading">
-                <h1>Log In</h1>
-            </div>
-        <div class = "panel-body">
-            <form role = "form" action="/loginCheck" method="post">
-<!--
-                <div class = "form-group">
-                    <label for = "nameF">First Name</label>
-                    <input type = "text" name = "nameF" class = "form-control" id = "inputNameF" placeholder="Enter First Name">
-                </div>
-                <div class = "form-group">
-                    <label for = "nameL">Last Name</label>
-                    <input type = "text" name = "nameL" class = "form-control" id = "inputNameL" placeholder="Enter Last Name">
-                </div>
--->
+      <div class="containerLog">
+          <form role = "form" action="/loginCheck" method="post">
                 <div class = "form-group">
                     <label for = "email">Email Address</label>
-                    <input type = "email" name = "email" class = "form-control" id = "inputEmail" placeholder="Enter email">
+                    <paper-input-decorator label = "Email"><input type = "email" name = "email" id = "email" placeholder="Enter email" required></paper-input-decorator>
                 </div>
                 <div class = "form-group">
                     <label for = "password">Password</label>
-                    <input type = "password" name = "pass" class = "form-control" id = "inputPassword" placeholder="Password">
+                    <paper-input-decorator label = "Password"><input type = "password" name = "password" id = "password" placeholder="Password" required></paper-input-decorator>
                 </div>
-                <button type = "submit" class = "btn btn-primary">Sign In</button>
-                <a href="/signup"><button class = "btn btn-primary" type="button">Sign Up</button></a>
+                <paper-button raised id = "submitBtn">Log In</paper-button>
+                <a href = "/signup"><paper-button raised id = "signupBtn">Sign Up</paper-button></a>
+                <div class="warning"></div>
             </form>
-        </div>
-        </div>
       </div>
       
+    
+    <script type="text/javascript" src="javascripts/login.js"></script>
   </body>
 </html>

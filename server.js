@@ -9,6 +9,8 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var io = require('socket.io')(server); // Let socket.io to listen on express port
 var mongoose = require('mongoose');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 
 var port = process.env.PORT || 8080;
 var ip = process.env.IP || "127.0.0.1";
@@ -28,6 +30,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser({secret: "shirley"}));
+
 
 var cookieEmail;
 var chatRoom = ['room0'];
@@ -232,25 +235,25 @@ app.get('/', function(req, res){
     console.log(req.cookies.email);
 });
 
-//app.get('/login', function(req, res){
-//    if (req.cookies.email){
-//        res.redirect('/profile');   
-//    }
-//    else {
-//        res.render('login');
-//    }
-//    console.log("/login " + req.cookies.email);
-//});
-//
-//app.get('/signup', function(req, res){
-//    if (req.cookies.email){
-//        res.redirect('profile');   
-//    }
-//    else {
-//        console.log("/signup " + req.cookies.email);
-//        res.render('signup');   
-//    }
-//});
+app.get('/login', function(req, res){
+    if (req.cookies.email){
+        res.redirect('/profile');   
+    }
+    else {
+        res.render('login');
+    }
+    console.log("/login " + req.cookies.email);
+});
+
+app.get('/signup', function(req, res){
+    if (req.cookies.email){
+        res.redirect('profile');   
+    }
+    else {
+        console.log("/signup " + req.cookies.email);
+        res.render('signup', {message: ""});   
+    }
+});
 
 app.get('/profile', function(req, res){
     if (req.cookies.email) {
@@ -307,21 +310,24 @@ app.get('/chat', function(req, res){
 //});
 
 app.post('/loginCheck', function(req, res){
+    var email = req.body.email;
+    var password = req.body.password;
+    
     console.log(req.body);
-    user.findOne({email: req.body.email, password: req.body.pass}, function(err, search){
+    user.findOne({email: email, password: password}, function(err, search){
         if (err){
             console.error(err);
         }
         else {
             if (search == null){
                 console.log("No Result Found"); 
-                res.redirect('/');  
+                res.end('null');
             }
             else {
                 console.log("Logged as " + search);  
                 res.cookie('email', req.body.email, {path: '/'});
                 console.log("/logincheck " + req.cookies.email);
-                res.redirect('/profile');
+                res.end('success');
             }
         }
     });
@@ -335,26 +341,70 @@ app.get('/logoff', function(req, res){
 })
 
 app.post('/registration', function(req, res){
-    console.log(req.body); 
-    var register = new user({
-        nameF: req.body.nameF, 
-        nameL: req.body.nameL,
-        nickname: req.body.nickname,
-        email: req.body.email,
-        password: req.body.pass,
-        birthday: 0,
-        language_main: "English",
-        point: 0,
-        online: false,
-        room: ""
+    // Variables that I need
+    var nameF = req.body.nameF;
+    var nameL = req.body.nameL;
+    var nickname = req.body.nickname;
+    var email = req.body.email;
+    var password = req.body.password;
+    
+    user.findOne({email: email}, function(err, result){
+        if (err){
+            console.err(err);
+        }
+        else if (result != null){
+            res.end('email');
+        }
+        else if (result == null){
+            user.findOne({nickname: nickname}, function(err, result){
+                if (err){
+                    console.err(err);
+                }
+                else if (result != null){
+                    res.end('nickname')
+                }
+                else if (result == null){
+                    console.log(req.body); 
+                    var register = new user({
+                        nameF: req.body.nameF, 
+                        nameL: req.body.nameL,
+                        nickname: req.body.nickname,
+                        email: req.body.email,
+                        password: req.body.password,
+                        birthday: 0,
+                        language_main: "English",
+                        point: 0,
+                        online: false,
+                        room: ""
+                    });
+                    register.save();
+                    res.end('success');
+                }
+            });
+        }
     });
-    try {
-        register.save();
-        res.redirect('/');
-    }
-    catch (err) {
-        console.error(err);   
-    }
+//    console.log(req.body); 
+//    var register = new user({
+//        nameF: req.body.nameF, 
+//        nameL: req.body.nameL,
+//        nickname: req.body.nickname,
+//        email: req.body.email,
+//        password: req.body.pass,
+//        birthday: 0,
+//        language_main: "English",
+//        point: 0,
+//        online: false,
+//        room: ""
+//    });
+//    register.save();
+//    res.redirect('/login');
+//    try {
+//        register.save();
+//        res.redirect('/login');
+//    }
+//    catch (err) {
+//        console.error(err);   
+//    }
 });
 
 app.get('/matching', function(req, res){
