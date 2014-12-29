@@ -9,6 +9,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var io = require('socket.io')(server); // Let socket.io to listen on express port
 var mongoose = require('mongoose');
+var compression = require('compression')
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
@@ -30,6 +31,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser({secret: "shirley"}));
+app.use(compression())
 
 
 var cookieEmail;
