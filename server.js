@@ -160,8 +160,6 @@ chatio.on('connection', function(socket){
             else {
                 socket.leave(chatRoom[i]);
             }
-            
-            
         }
         else {
             roomJoined = chatRoom[i];
