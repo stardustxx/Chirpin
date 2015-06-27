@@ -33,13 +33,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cookieParser({secret: "shirley"}));
 app.use(compression())
 
-
+// Create Cookie and room
 var cookieEmail;
 var chatRoom = ['room0'];
 
 try {
     mongoose.connect('mongodb://stardustxx:eric12261226@ds063870.mongolab.com:63870/chirpin');
-    //mongoose.connect('mongodb://localhost/users');  
+    //mongoose.connect('mongodb://localhost/users');
     console.log('Mongoose conencted');
 }
 catch (err) {
@@ -77,10 +77,10 @@ var userSchema = new Schema({
         type: String
     },
     point: {
-        type: Number   
+        type: Number
     },
     online: {
-        type: Boolean   
+        type: Boolean
     },
     room: {
         type: String
@@ -97,15 +97,15 @@ var controleRoom = function(arr, number){
 io.on('connection', function(socket){
     console.log(cookieEmail);
     var time = new Date();
-    
+
     var userObj = new Object();
     userObj['username'] = '';
     //userObj['msg'] = '';
-    
+
     if (cookieEmail != null){
         user.findOne({email: cookieEmail}, function(err, result){
             if (err){
-                conosle.err(err);   
+                conosle.err(err);
             }
             else if(result != null){
                 console.log(result.nameF + " " + result.nameL + " has connected");
@@ -113,23 +113,25 @@ io.on('connection', function(socket){
                 userObj['username'] = cookieEmail;
                 //userObj['msg'] = "";
                 socket.emit('who', userObj);
-            }   
+            }
         });
     }
-    
+
+    // When user disconnected, find the user on server and update user's online status
     socket.on('disconnect', function(){
         user.findOne({email: cookieEmail}, function(err, result){
             if (err){
-                conosle.err(err);   
+                conosle.err(err);
             }
             else if(result != null){
                 console.log(result.nameF + " " + result.nameL + " has disconnected");
                 user.update({email: cookieEmail}, {online: false}).exec();
-            }   
+            }
         });
     });
 });
 
+// On the chat page
 var chatio = io.of('/chat');
 chatio.on('connection', function(socket){
     console.log(cookieEmail);
@@ -137,7 +139,7 @@ chatio.on('connection', function(socket){
     console.log('su: ' + socket.username);
     var time = new Date();
     var roomJoined;
-    
+
     // Object that contains vital info
     var userObj = new Object();
     userObj['username'] = '';
@@ -146,6 +148,7 @@ chatio.on('connection', function(socket){
     userObj['room'] = '';
 
     // Check room capacity
+    // It is bad because it's not truly random
     for (var i = 0; i < chatRoom.length; i++){
         socket.join(chatRoom[i]);
         var member = chatio.adapter.rooms[chatRoom[i]];
@@ -169,19 +172,22 @@ chatio.on('connection', function(socket){
         }
     }
     console.log(chatRoom);
-    
+
+    // Send needed info to the joined room
     if (cookieEmail != null){
         user.findOne({email: socket.username}, function(err, result){
             if (err){
-                conosle.err(err);   
+                conosle.err(err);
             }
             else if(result != null){
                 console.log(result.nameF + " " + result.nameL + " has connected");
+                // Update user information
                 user.update({email: socket.username}, {online: true}).exec();
                 userObj.room = roomJoined;
                 userObj.name = result.nameF;
                 userObj['username'] = result.nickname;
                 userObj['msg'] = "";
+                // At chat.js, let participant be awared of who is in the room
                 socket.emit('who', userObj);
                 if ((Object.keys(member).length > 1)) {
                     chatio.in(roomJoined).emit('prep');
@@ -189,18 +195,19 @@ chatio.on('connection', function(socket){
                 else {
                     chatio.in(roomJoined).emit('waiting');
                 }
-            }   
+            }
         });
     }
-    
+
+    // At chat, participant decides what to do when a user joins the room
     socket.on('login', function(user){
          chatio.in(user.room).emit('login', user);
     });
-    
+
     socket.on('disconnect', function(){
         user.findOne({email: socket.username}, function(err, result){
             if (err){
-                conosle.err(err);   
+                conosle.err(err);
             }
             else if(result != null){
                 console.log(result.nameF + " " + result.nameL + " has disconnected");
@@ -209,7 +216,7 @@ chatio.on('connection', function(socket){
                 user.update({email: socket.username}, {online: false}).exec();
                 user.update({email: socket.username}, {room: ""}).exec();
                 console.log('dc: ' + socket.username);
-            }   
+            }
         });
     });
 
@@ -230,14 +237,14 @@ app.get('/', function(req, res){
         res.redirect('/profile');
     }
     else {
-        res.render('index');   
+        res.render('index');
     }
     console.log(req.cookies.email);
 });
 
 app.get('/login', function(req, res){
     if (req.cookies.email){
-        res.redirect('/profile');   
+        res.redirect('/profile');
     }
     else {
         res.render('login');
@@ -247,11 +254,11 @@ app.get('/login', function(req, res){
 
 app.get('/signup', function(req, res){
     if (req.cookies.email){
-        res.redirect('profile');   
+        res.redirect('profile');
     }
     else {
         console.log("/signup " + req.cookies.email);
-        res.render('signup', {message: ""});   
+        res.render('signup', {message: ""});
     }
 });
 
@@ -260,7 +267,7 @@ app.get('/profile', function(req, res){
         cookieEmail = req.cookies.email;
         user.findOne({email: req.cookies.email}, function(err, search){
             if (err){
-                console.err(err);   
+                console.err(err);
             }
             else {
                 if (search) {
@@ -268,14 +275,14 @@ app.get('/profile', function(req, res){
                     user.update({email: cookieEmail}, {online: true}).exec();
                     var year = new Date();
                     age = year.getFullYear() - search.birthday;
-                    res.render('profile', {name: search.nameF}); 
+                    res.render('profile', {name: search.nameF});
                 }
                 else {
-                    res.redirect('/');   
+                    res.redirect('/');
                 }
-                
+
             }
-        }); 
+        });
     }
     else {
         res.redirect('/');
@@ -290,7 +297,7 @@ app.get('/chat', function(req, res){
         res.render('chat');
     }
     else {
-        res.redirect('/profile');   
+        res.redirect('/profile');
     }
 });
 
@@ -300,7 +307,7 @@ app.get('/chat', function(req, res){
 //        user.update({email: cookieEmail}, {online: true}).exec();
 //        user.find({online: true}, function(err, result){
 //            if (err){
-//                console.error(err);   
+//                console.error(err);
 //            }
 //            else {
 //                res.render('online', {onlineUsers: result});
@@ -312,7 +319,7 @@ app.get('/chat', function(req, res){
 app.post('/loginCheck', function(req, res){
     var email = req.body.email;
     var password = req.body.password;
-    
+
     console.log(req.body);
     user.findOne({email: email, password: password}, function(err, search){
         if (err){
@@ -320,11 +327,11 @@ app.post('/loginCheck', function(req, res){
         }
         else {
             if (search == null){
-                console.log("No Result Found"); 
+                console.log("No Result Found");
                 res.end('null');
             }
             else {
-                console.log("Logged as " + search);  
+                console.log("Logged as " + search);
                 res.cookie('email', req.body.email, {path: '/'});
                 console.log("/logincheck " + req.cookies.email);
                 res.end('success');
@@ -334,7 +341,7 @@ app.post('/loginCheck', function(req, res){
 });
 
 app.get('/logoff', function(req, res){
-    res.clearCookie('email', { path: '/' }); 
+    res.clearCookie('email', { path: '/' });
     console.log('/logoff ' + req.cookies.email);
     cookieEmail = "";
     res.redirect('/');
@@ -347,7 +354,7 @@ app.post('/registration', function(req, res){
     var nickname = req.body.nickname;
     var email = req.body.email;
     var password = req.body.password;
-    
+
     user.findOne({email: email}, function(err, result){
         if (err){
             console.err(err);
@@ -364,9 +371,9 @@ app.post('/registration', function(req, res){
                     res.end('nickname')
                 }
                 else if (result == null){
-                    console.log(req.body); 
+                    console.log(req.body);
                     var register = new user({
-                        nameF: req.body.nameF, 
+                        nameF: req.body.nameF,
                         nameL: req.body.nameL,
                         nickname: req.body.nickname,
                         email: req.body.email,
@@ -383,9 +390,9 @@ app.post('/registration', function(req, res){
             });
         }
     });
-//    console.log(req.body); 
+//    console.log(req.body);
 //    var register = new user({
-//        nameF: req.body.nameF, 
+//        nameF: req.body.nameF,
 //        nameL: req.body.nameL,
 //        nickname: req.body.nickname,
 //        email: req.body.email,
@@ -403,7 +410,7 @@ app.post('/registration', function(req, res){
 //        res.redirect('/login');
 //    }
 //    catch (err) {
-//        console.error(err);   
+//        console.error(err);
 //    }
 });
 
@@ -414,12 +421,12 @@ app.get('/matching', function(req, res){
     if (req.cookies.email != null || req.cookies.email != undefined) {
         user.find({email: req.cookies.email}, function(err, result){
             if (err){
-                console.err(err);   
+                console.err(err);
             }
             else {
                 console.log(randomNumber);
             }
-        });   
+        });
         res.redirect('/chat');
     }
 });
@@ -428,7 +435,7 @@ app.get('/matching', function(req, res){
 app.get('/user', function(req, res){
     user.find({}, function(err, users){
         if (err) {
-            console.err(err);   
+            console.err(err);
         }
         res.send(users);
     });
@@ -466,11 +473,11 @@ app.use(function(err, req, res, next) {
 });
 
 server.listen(port, function(){
-   console.log("server running"); 
+   console.log("server running");
 });
 
 //server.listen(8081, function(){
-//   console.log("server running"); 
+//   console.log("server running");
 //});
 
 module.exports = app;
